@@ -21,7 +21,7 @@
 
 1. **ADB工具**
 
-   - 下载地址：https://developer.android.com/studio/releases/platform-tools
+   - 下载地址：[SDK 平台工具版本说明  |  Android Studio  |  Android Developers](https://developer.android.google.cn/tools/releases/platform-tools?hl=zh-cn)
    - 需要配置到系统环境变量PATH中，或使用ADB的绝对路径
 2. **Windows系统**
 
