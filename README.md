@@ -23,6 +23,7 @@
 
    - 下载地址：[SDK 平台工具版本说明  |  Android Studio  |  Android Developers](https://developer.android.google.cn/tools/releases/platform-tools?hl=zh-cn)
    - 需要配置到系统环境变量PATH中，或使用ADB的绝对路径
+   - 本项目中已包含adb工具，无需下载
 2. **Windows系统**
 
    - Windows 10 或更高版本
@@ -198,6 +199,8 @@ adb shell settings put system pointer_location 1
 9. **API依赖**：工作日判断依赖第三方API（`timor.tech`），如API不可用，脚本会发送错误通知并退出
 
 ## 故障排除
+
+> 注意：使用本脚本清关闭钉钉的极速打卡功能。
 
 ### 问题1：ADB设备未连接
 

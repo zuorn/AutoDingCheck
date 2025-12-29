@@ -11,8 +11,6 @@ cls
 set "load_delay=6"
 :: 企业微信Webhook地址（用于发送通知）
 set "webhook_url=https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=your_key"
-:: 截图保存目录
-set "screenshot_dir=D:\AutoDingCheck\screenshot"
 :: 配置最大随机延迟时间（分钟），如5表示0-5分钟随机延迟
 :: 防止每天同一时间打卡
 set "max_random_delay_min=1"
@@ -202,7 +200,7 @@ adb shell input tap 145 885
 echo 等待应用加载（%load_delay%秒）...
 timeout /t %load_delay% /nobreak >nul
 
-echo 点击完成打卡...
+echo 点击打卡按钮...
 adb shell input tap 548 1317
 
 echo 等待应用加载（%load_delay%秒）...
@@ -212,6 +210,9 @@ timeout /t %load_delay% /nobreak >nul
 
 
 :: =========================================================================
+:: 设置截图保存目录为脚本所在目录下的screenshot文件夹
+set "screenshot_dir=%~dp0screenshot"
+
 :: 确保截图保存目录存在，如果不存在则创建
 if not exist "%screenshot_dir%" (
     echo 截图目录不存在，正在创建：%screenshot_dir%
@@ -245,7 +246,9 @@ powershell -Command "[Console]::OutputEncoding = [System.Text.Encoding]::UTF8; $
 timeout /t 1 /nobreak >nul
 
 :: 使用PowerShell将图片转换为base64并发送到企业微信
-powershell -Command "$filePath = '%screenshot_path%'; $webhookUrl = '%webhook_url%'; if (-not (Test-Path $filePath)) { Write-Host '❌ 错误：截图文件不存在'; exit; }; $fileBytes = [System.IO.File]::ReadAllBytes($filePath); $base64 = [System.Convert]::ToBase64String($fileBytes); $md5 = (Get-FileHash -Path $filePath -Algorithm MD5).Hash.ToLower(); $body = @{ msgtype = 'image'; image = @{ base64 = $base64; md5 = $md5 } } | ConvertTo-Json -Depth 10; try { $response = Invoke-RestMethod -Uri $webhookUrl -Method Post -Body $body -ContentType 'application/json'; if ($response.errcode -eq 0) { Write-Host '✅ 截图已成功发送到企业微信群！' } else { Write-Host '❌ 发送失败：' $response.errmsg } } catch { Write-Host '❌ 发送失败：' $_.Exception.Message }"
+@REM powershell -Command "$filePath = '%screenshot_path%'; $webhookUrl = '%webhook_url%'; if (-not (Test-Path $filePath)) { Write-Host '❌ 错误：截图文件不存在'; exit; }; $fileBytes = [System.IO.File]::ReadAllBytes($filePath); $base64 = [System.Convert]::ToBase64String($fileBytes); $md5 = (Get-FileHash -Path $filePath -Algorithm MD5).Hash.ToLower(); $body = @{ msgtype = 'image'; image = @{ base64 = $base64; md5 = $md5 } } | ConvertTo-Json -Depth 10; try { $response = Invoke-RestMethod -Uri $webhookUrl -Method Post -Body $body -ContentType 'application/json'; if ($response.errcode -eq 0) { Write-Host '✅ 截图已成功发送到企业微信群！' } else { Write-Host '❌ 发送失败：' $response.errmsg } } catch { Write-Host '❌ 发送失败：' $_.Exception.Message }"
+
+powershell -Command "$filePath = '%screenshot_path%'; $webhookUrl = '%webhook_url%'; if (-not (Test-Path $filePath)) { Write-Host '❌ 错误：截图文件不存在'; exit; }; $fileBytes = [System.IO.File]::ReadAllBytes($filePath); $base64 = [System.Convert]::ToBase64String($fileBytes); $md5 = (Get-FileHash -Path $filePath -Algorithm MD5).Hash.ToLower(); $body = @{ msgtype = 'image'; image = @{ base64 = $base64; md5 = $md5 } } | ConvertTo-Json -Depth 10; try { $response = Invoke-RestMethod -Uri $webhookUrl -Method Post -Body $body -ContentType 'application/json'; if ($response.errcode -eq 0) { Write-Host '✅ 截图已成功发送到企业微信群！'; Remove-Item -Path $filePath -Force; Write-Host '✅ 本地截图文件已清理' } else { Write-Host '❌ 发送失败：' $response.errmsg } } catch { Write-Host '❌ 发送失败：' $_.Exception.Message }"
 
 :end_send
 
