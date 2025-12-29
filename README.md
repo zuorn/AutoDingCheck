@@ -115,7 +115,7 @@ adb shell settings put system pointer_location 1
 1. 打开"任务计划程序"（Task Scheduler）
 2. 创建基本任务
 3. 设置触发器（如每天上午9:00）
-4. 设置操作：启动程序 `adb_auto.bat`
+4. 设置操作：启动程序选择 `adb_auto_ding.bat`
 5. 完成配置
 
 ## 配置说明
