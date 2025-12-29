@@ -42,6 +42,8 @@
 2. 获取Webhook地址
 3. 在脚本配置区填入Webhook地址
 
+可以通过企业微信的微信插件，来实现在微信中查看企业微信的消息，这样我们就可以在微信中收到截图通知了，设置参看链接：[如何管理微信插件-帮助中心-企业微信](https://open.work.weixin.qq.com/help2/pc/18122)
+
 ### 网络要求
 
 - 需要网络连接以调用工作日判断API（`https://timor.tech/api/holiday/info/`）
@@ -51,7 +53,7 @@
 
 ### 1. 下载脚本
 
-将 `adb_auto.bat` 文件保存到本地目录（如 `D:\adb`）
+将本项目克隆到本地
 
 ### 2. 配置ADB
 
@@ -73,7 +75,7 @@ adb devices
 
 ### 4. 配置脚本参数
 
-编辑 `adb_auto.bat` 文件，修改配置区参数：
+编辑 `adb_auto_ding.bat` 文件，修改配置区参数：
 
 ```batch
 :: ====================== 脚本配置区（可根据需要调整） ======================
@@ -104,6 +106,8 @@ set "max_random_delay_min=1"
 adb shell settings put system pointer_location 1
 ```
 
+或者在手指设置-开发者选项菜单中打开指针位置
+
 ## 使用方法
 
 ### 手动运行
@@ -114,24 +118,22 @@ adb shell settings put system pointer_location 1
 
 1. 打开"任务计划程序"（Task Scheduler）
 2. 创建基本任务
-3. 设置触发器（如每天上午9:00）
+3. 设置触发器（如每天上午8:50）
 4. 设置操作：启动程序选择 `adb_auto_ding.bat`
 5. 完成配置
 
 ## 配置说明
 
-| 配置项                   | 说明                           | 默认值                       |
-| ------------------------ | ------------------------------ | ---------------------------- |
-| `load_delay`           | 钉钉启动后等待加载的时间（秒） | 6                            |
-| `webhook_url`          | 企业微信机器人Webhook地址      | 需自行配置                   |
-| `screenshot_dir`       | 截图保存目录                   | D:\\AutoDingCheck\screenshot |
-| `max_random_delay_min` | 最大随机延迟时间（分钟）       | 1                            |
+| 配置项                   | 说明                           | 默认值     |
+| ------------------------ | ------------------------------ | ---------- |
+| `load_delay`           | 钉钉启动后等待加载的时间（秒） | 6          |
+| `webhook_url`          | 企业微信机器人Webhook地址      | 需自行配置 |
+| `max_random_delay_min` | 最大随机延迟时间（分钟）       | 1          |
 
 **配置说明：**
 
 - `load_delay`：根据手机性能调整，低端手机建议设置为8-10秒
 - `webhook_url`：企业微信群机器人Webhook地址，用于接收打卡通知和错误通知
-- `screenshot_dir`：截图保存目录，如果目录不存在会自动创建
 - `max_random_delay_min`：随机延迟时间范围（0到设定值分钟），用于避免每天同一时间打卡
 
 ## 工作流程
